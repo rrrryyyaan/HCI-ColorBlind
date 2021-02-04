@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, pygame.freetype, sys, time, random
 from pygame.locals import *
 
 BLACK = (0, 0, 0)
@@ -9,6 +9,8 @@ GREEN = (102, 204, 0)
 YELLOW = (255, 255, 0)
 BLUE = (0, 255, 255)
 PURPLE = (53, 28, 117)
+
+MAX_AMOUNT = 15
 
 def button(display, x, y, w, h, color, action=None):
     mouse = pygame.mouse.get_pos()
@@ -21,10 +23,10 @@ def button(display, x, y, w, h, color, action=None):
     else:
         pygame.draw.rect(display, color, (x, y, w, h))
 
-    #smallText = pygame.font.Font("freesansbold.ttf", 20)
-    #textSurf, textRect = text_objects(msg, smallText)
-    #textRect.center = ( (x+(w/2)), (y+(h/2)) )
-    #gameDisplay.blit(textSurf, textRect)
+def text(display, msg, x, y):
+    font = pygame.freetype.SysFont('arial', 20)
+    font.render_to(display, (x // 2, y // 2), msg, BLACK)
+    pygame.display.flip()
 
 def selectRed():
     print("red")
@@ -44,18 +46,41 @@ def selectYellow():
 def selectBrown():
     print("brown")
 
-def showCurrent():
-    print("Showing current stop")
+def selectCurrent():
+    print("current")
+
+def showCurrent(DISPLAY):
+    randomNumber = random.randint(0, 5)
+    if randomNumber == 0:
+        button(DISPLAY, 540, 230, 100, 100, RED, selectCurrent)
+    elif randomNumber == 1:
+        button(DISPLAY, 540, 230, 100, 100, BLUE, selectCurrent)
+    elif randomNumber == 2:
+        button(DISPLAY, 540, 230, 100, 100, GREEN, selectCurrent)
+    elif randomNumber == 3:
+        button(DISPLAY, 540, 230, 100, 100, BROWN, selectCurrent)
+    elif randomNumber == 4:
+        button(DISPLAY, 540, 230, 100, 100, PURPLE, selectCurrent)
+    elif randomNumber == 5:
+        button(DISPLAY, 540, 230, 100, 100, YELLOW, selectCurrent)
+
+def calculateTime(start, end):
+    return end - start
 
 def calculateDelay():
     #Actual - Expected
-    print("Delay")
+    return "00:10"
 
 def main():
     pygame.init()
     size = (width, height) = (685, 400)
     DISPLAY = pygame.display.set_mode(size)
     pygame.display.set_caption('Bus Stop Manager')
+
+    global start
+    global end
+
+    start = time.time()
 
     #clock = pygame.time.Clock()
 
@@ -67,6 +92,14 @@ def main():
                 pygame.quit()
                 sys.exit()
 
+        #print("Start: {}".format(start))
+        end = time.time()
+        if(calculateTime(start, end) >= 10):
+            #print(calculateTime(start, end))
+            print("Display current")
+            start = time.time()
+            showCurrent(DISPLAY)
+                    
         button(DISPLAY, 15, 25, 100, 100, RED, selectRed)
         button(DISPLAY, 15 + (110 * 1), 25, 100, 100, BROWN, selectBrown)
         button(DISPLAY, 15 + (110 * 2), 25, 100, 100, GREEN, selectGreen)
@@ -74,7 +107,11 @@ def main():
         button(DISPLAY, 15 + (110 * 4), 25, 100, 100, BLUE, selectBlue)
         button(DISPLAY, 15 + (110 * 5), 25, 100, 100, PURPLE, selectPurple)
 
-        
+        text(DISPLAY, "Expected Arrival: ", 100, 500)
+        text(DISPLAY, "Actual Arrival: ", 100, 550)
+        text(DISPLAY, "Delay: "+ calculateDelay(), 100, 600)
+
+        text(DISPLAY, "Current Stop:", 1085, 410)
         
         pygame.display.update()
         #clock.tick(15)
