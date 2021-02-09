@@ -1,5 +1,6 @@
-import pygame, pygame.freetype, sys, time, random
+import pygame, pygame.freetype, sys, time, random, csv
 from pygame.locals import *
+from os import path
 
 # Color Blind Bus Stop Interface
 # Project 1
@@ -48,14 +49,16 @@ def selectRed():
         print("Correct! Red")
         displayActual(False)
     else:
-        print("Wrong color..")
-
+        print("Wrong color.")
+    export(currentColor, "Red", calculateDelay())
+        
 def selectBlue():
     if currentColor == 4:
         print("Correct! Blue")
         displayActual(False)
     else:
-        print("Wrong color..")
+        print("Wrong color.")
+    export(currentColor, "Blue", calculateDelay())
 
 def selectGreen():
     if currentColor == 2:
@@ -63,27 +66,31 @@ def selectGreen():
         displayActual(False)
     else:
         print("Wrong color..")
+    export(currentColor, "Green", calculateDelay())
 
 def selectPurple():
     if currentColor == 5:
         print("Correct! Purple")
         displayActual(False)
     else:
-        print("Wrong color..")
+        print("Wrong color.")
+    export(currentColor, "Purple", calculateDelay())
 
 def selectYellow():
     if currentColor == 3:
         print("Correct! Yellow")
         displayActual(False)
     else:
-        print("Wrong color..")
+        print("Wrong color.")
+    export(currentColor, "Yellow", calculateDelay())
 
 def selectBrown():
     if currentColor == 1:
         print("Correct! Brown")
         displayActual(False)
     else:
-        print("Wrong color..")
+        print("Wrong color.")
+    export(currentColor, "Brown", calculateDelay())
 
 def displayCurrent():
     global currentColor
@@ -143,6 +150,20 @@ def displayAllComponents():
 def displayArriveMessage():
     text("You are arriving shortly!", 500, 650)
 
+def colorToString(colorInt):
+    if colorInt == 0:
+        return "Red"
+    if colorInt == 1:
+        return "Brown"
+    if colorInt == 2:
+        return "Green"
+    if colorInt == 3:
+        return "Yellow"
+    if colorInt == 4:
+        return "Blue"
+    if colorInt == 5:
+        return "Purple"
+
 # Handles selecting a new bus route every 10 seconds
 def calculateTotalTime():
     return end - start
@@ -157,6 +178,19 @@ def calculateActual():
 # selecting the correct route
 def calculateDelay():
     return end - expectedEnd
+
+def export(current, pressed, delay):
+    if (path.exists('testResults.csv')):
+        with open ('testResults.csv', 'a') as csv_file:
+            csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            csv_writer.writerow([colorToString(current),(pressed), delay])
+    else:
+        print('False')
+        with open ('testResults.csv', 'w') as csv_file:
+            csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            csv_writer.writerow([colorToString(current), (pressed), delay])
+
+
 
 def main():
     pygame.display.set_caption('Bus Stop Manager')
