@@ -2,6 +2,8 @@
 Mini project 1 for HCI
 Author: Ryan Bell, Sam Woodworth
 
+Please read all the way through this before starting!
+
 How To Run:
 Step 1: Download and install Python (preferably python 3.7.7 or greater)
 
