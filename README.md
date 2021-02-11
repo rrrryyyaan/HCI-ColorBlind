@@ -9,6 +9,7 @@ Step 1: Download and install Python (preferably python 3.7.7 or greater)
 
 Step 2: Install PyGame by using Pip. Open a command prompt and input the below command:
 Command: python3 -m pip install -U pygame --user
+
 More info on how to install PyGame here: https://www.pygame.org/wiki/GettingStarted
 
 Step 3: Download 'ColorBlind.py' from this GitHub and place in a location you'll remember (preferably in a new folder on your Desktop)
